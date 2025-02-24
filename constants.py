@@ -1,0 +1,1 @@
+MAINPAGE_URL = 'https://www.mvideo.ru/'
