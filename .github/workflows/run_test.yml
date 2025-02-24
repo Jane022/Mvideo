@@ -1,6 +1,16 @@
 name: Automated mvideo tests
 
-on: push
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_target:
+        description: Choose target
+        required: true
+        default:
+        type: choice
+        options:
+          - first_test
+          - second_test
 
 jobs:
   test:
@@ -17,5 +27,9 @@ jobs:
         run: sudo apt-get install google-chrome-stable
       - name: Install dependecies
         run: pip install -r requirements.txt
-      - name: Run tests
-        run: pytest
+      - name: First test
+        if: "github.event.inputs.deployment_target == 'first_test'"
+        run: pytest tests/test_catalog_page.py::test_check_products_search
+      - name: Second test
+        if: "github.event.inputs.deployment_target == 'second_test'"
+        run: pytest tests/test_catalog_page.py::test_check_products_quantity_in_search_results
